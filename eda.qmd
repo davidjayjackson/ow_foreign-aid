@@ -1,0 +1,44 @@
+---
+title: "Foreign Aid-Received"
+format: html
+toc: true
+echo: false
+jupyter: python3
+---
+
+# Header
+
+```{python}
+from ibis.interactive import *
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
+
+```{python}
+aid = ibis.read_csv('./foreign-aid-received-net.csv').rename("snake_case")
+aid_filtered = aid.filter(_.entity.contains("income")).to_pandas()
+
+
+```
+# Aid Recieved by Income Group
+
+```{python}
+sns.lineplot(x='year',y='foreign_aid',hue='entity',data=aid_filtered)
+plt.title("Foreign Aid Received")
+plt.ylabel("Ten Billion (USD)")
+plt.grid()
+plt.show()
+
+```
+# North and South America
+
+```{python}
+americas = aid.filter(_.entity.contains("America")).to_pandas()
+sns.lineplot(x='year',y='foreign_aid',hue='entity',data=americas)
+plt.title("Foreign Aid Received")
+plt.ylabel("Ten Billion (USD)")
+plt.grid()
+plt.show()
+
+```
